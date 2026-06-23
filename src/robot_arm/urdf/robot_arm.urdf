@@ -1,0 +1,175 @@
+<?xml version="1.0"?>
+<robot name="robot_arm">
+  <material name="white">
+    <color rgba="1 1 1 1"/>
+  </material>
+
+  <material name="red">
+    <color rgba="1 0 0 1"/>
+  </material>
+
+  <material name="gray">
+    <color rgba="0.5 0.5 0.5 1"/>
+  </material>
+
+  <material name="yellow">
+    <color rgba="1 1 0 1"/>
+  </material>
+
+  <material name="blue">
+    <color rgba="0 0 1 1"/>
+  </material>
+  
+  <link name="base_link">
+    <visual>
+      <geometry>
+        <box size="0.3 0.3 0.3"/>
+      </geometry>
+      <material name="blue">
+        <color rgba="0 0 1 1"/>
+      </material>
+    </visual>
+  </link>
+
+  <link name="link1">
+    <visual>
+      <origin xyz="0 0 0.15" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.1 0.1 0.3"/>
+      </geometry>
+      <material name="white">
+        <color rgba="0.9 0.9 0.9 1"/>
+      </material>
+    </visual>
+  </link>
+
+  <joint name="joint1" type="revolute">
+    <parent link="base_link"/>
+    <child link="link1"/>
+    <origin xyz="0 0 0.15" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-1" upper="1" effort="1" velocity="1"/>
+  </joint>
+
+  <link name="link2">
+    <visual>
+      <origin xyz="0 0 0.025" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.15 0.15 0.05"/>
+      </geometry>
+      <material name="blue">
+        <color rgba="0 0 1 1"/>
+      </material>
+    </visual>
+  </link>
+
+  <joint name="joint2" type="revolute">
+    <parent link="link1"/>
+    <child link="link2"/>
+    <origin xyz="0 0 0.3" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-3.14" upper="3.14" effort="1" velocity="1"/>
+  </joint>
+
+  <link name="link3">
+    <visual>
+      <origin xyz="0 0 0.15" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.1 0.1 0.3"/>
+      </geometry>
+      <material name="red">
+        <color rgba="1 0 0 1"/>
+      </material>
+    </visual>
+  </link>
+
+  <joint name="joint3" type="revolute">
+    <parent link="link2"/>
+    <child link="link3"/>
+    <origin xyz="0 0 0.05" rpy="0 0 0"/>
+    <axis xyz="1 0 0"/>
+    <limit lower="-1.5" upper="1.5" effort="1" velocity="1"/>
+  </joint>
+
+  <!-- GRIPPER ARM -->
+  <link name="gripper_pole_link">
+    <visual>
+      <origin xyz="0 0 -0.3" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.05 0.05 0.4"/>
+      </geometry>
+      <material name="gray">
+        <color rgba="0.5 0.5 0.5 1"/>
+      </material>
+    </visual>
+  </link>
+
+  <joint name="gripper_extension" type="prismatic">
+    <parent link="link3"/>
+    <child link="gripper_pole_link"/>
+    <origin xyz="0 0 0.5" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="1000.0" lower="0" upper="0.3" velocity="0.5"/>
+  </joint>
+
+  <!-- LEFT GRIPPER -->
+  <link name="left_gripper">
+    <visual>
+      <origin xyz="0 0.075 -0.325" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.1 0.02 0.1"/>
+      </geometry>
+      <material name="yellow">
+        <color rgba="1 1 0 1"/>
+      </material>
+    </visual>
+  </link>
+
+  <!-- RIGHT GRIPPER -->
+  <link name="right_gripper">
+    <visual>
+      <origin xyz="0 -0.075 -0.325" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.1 0.02 0.1"/>
+      </geometry>
+      <material name="yellow">
+        <color rgba="1 1 0 1"/>
+      </material>
+    </visual>
+  </link>
+
+  <link name="link4_link">
+    <visual>
+      <origin xyz="0 0 -0.4" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.1 0.2 0.05"/>
+      </geometry>
+      <material name="blue">
+        <color rgba="0 0 1 1"/>
+      </material>
+    </visual>
+  </link>
+
+  <joint name="link4_joint" type="revolute">
+    <parent link="gripper_pole_link"/>
+    <child link="link4_link"/>
+    <origin xyz="0 0 0.3" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-3.14" upper="3.14" effort="1" velocity="1"/>
+  </joint>
+
+  <joint name="left_gripper_joint" type="prismatic">
+    <parent link="link4_link"/>
+    <child link="left_gripper"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-0.065" upper="0" effort="1000" velocity="0.5"/>
+  </joint>
+
+  <joint name="right_gripper_joint" type="prismatic">
+    <parent link="link4_link"/>
+    <child link="right_gripper"/>
+    <axis xyz="0 -1 0"/>
+    <limit lower="-0.065" upper="0" effort="1000" velocity="0.5"/>
+  </joint>
+
+</robot>
