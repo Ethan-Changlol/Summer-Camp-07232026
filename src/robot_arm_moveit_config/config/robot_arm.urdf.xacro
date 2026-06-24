@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="robot_arm">
+
+    <xacro:arg name="initial_positions_file" default="initial_positions.yaml" />
+
+    <!-- Import robot URDF -->
+    <xacro:include filename="$(find robot_arm_description)/urdf/robot_arm.urdf"/>
+
+    <!-- Import ros2_control xacro -->
+    <xacro:include filename="robot_arm.ros2_control.xacro" />
+
+    <!-- ros2_control macro call -->
+    <xacro:robot_arm_ros2_control
+        name="FakeSystem"
+        initial_positions_file="$(arg initial_positions_file)" />
+
+    <!-- Gazebo plugin (MUST be inside robot tag) -->
+    <gazebo>
+        <plugin filename="libgz_ros2_control-system.so"
+                name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+
+            <parameters>$(find robot_arm_moveit_config)/config/ros2_controllers.yaml</parameters>
+            <controller_manager_name>controller_manager</controller_manager_name>
+
+        </plugin>
+    </gazebo>
+
+</robot>
